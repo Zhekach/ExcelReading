@@ -1,5 +1,6 @@
 ﻿using Aspose.Cells;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 internal class Program
 {
@@ -107,7 +108,8 @@ internal class ElementsCounter
             {
                 foreach (Element element in ElementsCounts.Keys)
                 {
-                    if (string.Equals(rowData[i], element.Name, StringComparison.OrdinalIgnoreCase))
+                    if(rowData.Equals(element.Name))
+                    //if (string.Equals(rowData[i], element.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         newElement = element;
                         isNameOk = true;
@@ -117,7 +119,8 @@ internal class ElementsCounter
 
             if (isNameOk)
             {
-                if (string.Equals(rowData[i], newElement.Type, StringComparison.OrdinalIgnoreCase))
+                if (rowData.Equals(newElement.Type))
+                //if (string.Equals(rowData[i], newElement.Type, StringComparison.OrdinalIgnoreCase))
                 {
                     isTypeOk = true;
                 }
@@ -125,7 +128,8 @@ internal class ElementsCounter
 
             if (isNameOk && isTypeOk)
             {
-                if (string.Equals(rowData[i], newElement.Code, StringComparison.OrdinalIgnoreCase))
+                if (rowData.Equals(newElement.Code))
+                //if (string.Equals(rowData[i], newElement.Code, StringComparison.OrdinalIgnoreCase))
                 {
                     isCodeOk = true;
                 }
@@ -133,7 +137,8 @@ internal class ElementsCounter
 
             if (isNameOk && isTypeOk && isCodeOk)
             {
-                if (string.Equals(rowData[i], newElement.Unit, StringComparison.OrdinalIgnoreCase))
+                if (rowData.Equals(newElement.Unit))
+                //if (string.Equals(rowData[i], newElement.Unit, StringComparison.OrdinalIgnoreCase))
                 {
                     isUnitOk = true;
                     Console.WriteLine("=============\n" +
@@ -174,12 +179,12 @@ internal class ElementsCounter
 internal class Element
 {
 
-    public string Name { get; private set; }
-    public string Type { get; private set; }
-    public string Code { get; private set; }
-    public string Unit { get; private set; }
+    public ElementField Name { get; private set; }
+    public ElementField Type { get; private set; }
+    public ElementField Code { get; private set; }
+    public ElementField Unit { get; private set; }
 
-    public Element(string name, string type, string code, string unit)
+    public Element(ElementField name, ElementField type, ElementField code, ElementField unit)
     {
         Name = name;
         Type = type;
@@ -198,10 +203,66 @@ internal class Element
     }
 }
 
+internal class ElementField
+{
+    public string Name { get; private set; }
+    public List<string> Variants { get; private set; }
+
+    public ElementField(string name)
+    {
+        Name=name;
+        Variants=new List<string>();
+    }
+
+    public ElementField(string name, List<string> variants)
+    {
+        Name = name;
+        Variants = variants;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is string == false || obj == null && Name != null)
+        {
+            return false;
+        }
+
+        if (obj == null && Name == null)
+        {
+            return true;
+        }
+        else if (string.Equals(obj.ToString(), Name, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        foreach(string variant in Variants)
+        {
+            if(string.Equals(obj.ToString(), variant, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+
+    public void AddVariant(string newVariant)
+    {
+        Variants.Add(newVariant);
+    }
+
+    public void RemoveVariant(string newVariant)
+    {
+        Variants.Remove(newVariant);
+    }
+}
+
 internal class ElementsVariants
 {
     public readonly static List<Element> s_elements = new List<Element>()
     {
-        {new Element("Переход прямоугольного сечения", null, "П-630х550-500х350", "шт.") }
+        {new Element(new ElementField("Переход прямоугольного сечения", new List<string>{"Переход прямоугольногА сечения", "Переходной"}), null, new ElementField("П-630х550-500х350"), new ElementField("шт.")) }
     };
 }
