@@ -50,7 +50,7 @@ internal class FileReader
             // Цикл по строкам
             for (int i = 0; i < rows; i++)
             {
-                string[] rowData = new string[rows];
+                string[] rowData = new string[cols];
                 float count = 0;
 
                 // Перебрать каждый столбец в выбранной строке
@@ -84,7 +84,6 @@ internal class ElementsCounter
 {
     public Dictionary<Element, float> ElementsCounts = new Dictionary<Element, float>();
 
-    public Element? TestElement;
     public ElementsCounter()
     {
         foreach (Element element in ElementsVariants.s_elements)
@@ -108,7 +107,7 @@ internal class ElementsCounter
             {
                 foreach (Element element in ElementsCounts.Keys)
                 {
-                    if(rowData.Equals(element.Name))
+                    if (element.Name.Equals(rowData[i]))
                     //if (string.Equals(rowData[i], element.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         newElement = element;
@@ -119,7 +118,11 @@ internal class ElementsCounter
 
             if (isNameOk)
             {
-                if (rowData.Equals(newElement.Type))
+                if(newElement.Type == null)
+                {
+                    isTypeOk = true;
+                }
+                else if (newElement.Type.Equals(rowData[i]))
                 //if (string.Equals(rowData[i], newElement.Type, StringComparison.OrdinalIgnoreCase))
                 {
                     isTypeOk = true;
@@ -128,7 +131,11 @@ internal class ElementsCounter
 
             if (isNameOk && isTypeOk)
             {
-                if (rowData.Equals(newElement.Code))
+                if (newElement.Code == null)
+                {
+                    isCodeOk = true;
+                }
+                else if (newElement.Code.Equals(rowData[i]))
                 //if (string.Equals(rowData[i], newElement.Code, StringComparison.OrdinalIgnoreCase))
                 {
                     isCodeOk = true;
@@ -137,13 +144,16 @@ internal class ElementsCounter
 
             if (isNameOk && isTypeOk && isCodeOk)
             {
-                if (rowData.Equals(newElement.Unit))
+                if (newElement.Unit.Equals(rowData[i]))
                 //if (string.Equals(rowData[i], newElement.Unit, StringComparison.OrdinalIgnoreCase))
                 {
                     isUnitOk = true;
                     Console.WriteLine("=============\n" +
                                       "Элемент найден!!\n" +
                                       "=============");
+                    Console.WriteLine("Press any key");
+                    Console.ReadKey();
+
                     break;
                 }
             }
@@ -220,6 +230,11 @@ internal class ElementField
         Variants = variants;
     }
 
+    public override string ToString()
+    {
+        return Name;
+    }
+
     public override bool Equals(object? obj)
     {
         if (obj is string == false || obj == null && Name != null)
@@ -263,6 +278,9 @@ internal class ElementsVariants
 {
     public readonly static List<Element> s_elements = new List<Element>()
     {
-        {new Element(new ElementField("Переход прямоугольного сечения", new List<string>{"Переход прямоугольногА сечения", "Переходной"}), null, new ElementField("П-630х550-500х350"), new ElementField("шт.")) }
+        {new Element(new ElementField("Переход прямоугольного сечения", new List<string>{"Переход прямоугольногА сечения", "Переходной"}),
+            null, 
+            new ElementField("П-500х350-350х500", new List<string>{"П-500х350-350х500"}),
+            new ElementField("шт.")) }
     };
 }
