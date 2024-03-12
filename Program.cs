@@ -1,11 +1,18 @@
 ﻿using Aspose.Cells;
+using CsvHelper;
+using System.IO;
+using System.Globalization;
+using System.Linq;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using CsvHelper.Configuration.Attributes;
+using CsvHelper.Configuration;
 
 internal class Program
 {
     private static void Main()
     {
+        CsvElementReader csvElementReader = new CsvElementReader("DataBase.csv");
         FileReader fileReader = new FileReader();
         fileReader.Run("test.xlsx");
     }
@@ -80,6 +87,43 @@ internal class FileReader
     }
 }
 
+internal class CsvElementReader
+{
+    public CsvConfiguration csvConfiguration;
+
+    public CsvElementReader(string filePath)
+    {
+        csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = ";",
+        };
+
+        using (StreamReader streamReader = new StreamReader(filePath)) 
+        using (CsvReader csv = new CsvReader(streamReader, csvConfiguration))
+        {
+            var elements = csv.GetRecords<ElementCsvWrapper>().ToList();
+            foreach(ElementCsvWrapper element in elements)
+            {
+                Console.WriteLine(element.Name + element.Type + element.Code + element.Unit);
+            }
+        }
+        
+    }
+}
+
+internal class ElementCsvWrapper
+{ 
+    [Name("Name")]
+    public string Name { get; set; }
+    [Name("Type")]
+    public string Type { get; set; }
+    [Name("Code")]
+    public string Code { get; set; }
+    [Name("Unit")]
+    public string Unit { get; set; }
+
+}
+
 internal class ElementsCounter
 {
     public Dictionary<Element, float> ElementsCounts = new Dictionary<Element, float>();
@@ -118,7 +162,7 @@ internal class ElementsCounter
 
             if (isNameOk)
             {
-                if(newElement.Type == null)
+                if (newElement.Type == null)
                 {
                     isTypeOk = true;
                 }
@@ -220,8 +264,8 @@ internal class ElementField
 
     public ElementField(string name)
     {
-        Name=name;
-        Variants=new List<string>();
+        Name = name;
+        Variants = new List<string>();
     }
 
     public ElementField(string name, List<string> variants)
@@ -251,9 +295,9 @@ internal class ElementField
             return true;
         }
 
-        foreach(string variant in Variants)
+        foreach (string variant in Variants)
         {
-            if(string.Equals(obj.ToString(), variant, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(obj.ToString(), variant, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -279,7 +323,7 @@ internal class ElementsVariants
     public readonly static List<Element> s_elements = new List<Element>()
     {
         {new Element(new ElementField("Переход прямоугольного сечения", new List<string>{"Переход прямоугольногА сечения", "Переходной"}),
-            null, 
+            null,
             new ElementField("П-500х350-350х500", new List<string>{"П-500х350-350х500"}),
             new ElementField("шт.")) }
     };
