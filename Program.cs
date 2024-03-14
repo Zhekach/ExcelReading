@@ -80,6 +80,8 @@ namespace ExcelReading
                     }
                     // Распечатать разрыв строки
                     Console.WriteLine(" ");
+                    //Console.WriteLine("Press any key");
+                    //Console.ReadKey();
 
                     elementsCounter.CountElement(rowData, count);
                 }

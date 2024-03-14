@@ -1,4 +1,6 @@
-﻿namespace ExcelReading
+﻿using System.Text.RegularExpressions;
+
+namespace ExcelReading
 {
     internal class ElementField
     {
@@ -40,6 +42,10 @@
             {
                 return true;
             }
+            else if(string.Equals(Normalize(obj.ToString()), Normalize(Name), StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
 
             foreach (string variant in Variants)
             {
@@ -51,6 +57,18 @@
 
 
             return false;
+        }
+
+        private string Normalize (string value)
+        {
+            string pattern = ("-? | ‐? | \\??");
+            //string pattern = "(Mr\\.? |Mrs\\.? |Miss |Ms\\.? )";
+            //           string patternX = ("-? | ‐?");
+
+
+            Regex.Replace (value, pattern, "-");
+
+            return value;
         }
 
         public void AddVariant(string newVariant)
