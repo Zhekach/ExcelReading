@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using CsvHelper.Configuration.Attributes;
 using CsvHelper.Configuration;
+using System.Drawing;
 
 namespace ExcelReading
 {
@@ -15,6 +16,10 @@ namespace ExcelReading
         private static void Main()
         {
             CsvElementReader csvElementReader = new CsvElementReader("DataBase.csv");
+
+            Console.WriteLine("Press any key...");
+            Console.ReadKey();
+
             FileReader fileReader = new FileReader();
             fileReader.Run("test.xlsx");
         }
@@ -78,16 +83,26 @@ namespace ExcelReading
                             count = Convert.ToSingle(worksheet.Cells[i, j].Value);
                         }
                     }
-                    // Распечатать разрыв строки
+
                     Console.WriteLine(" ");
                     //Console.WriteLine("Press any key");
                     //Console.ReadKey();
 
-                    elementsCounter.CountElement(rowData, count);
+                    if (elementsCounter.CountElement(rowData, count) == true)
+                    {
+                        worksheet.Cells[i, cols + 5].Value = "+";
+                    }
+                    else
+                    {
+                        worksheet.Cells[i, cols + 5].Value = "-";
+                    }
                 }
             }
 
             elementsCounter.PrintInfo();
+
+            
+            workBook.Save("testEditted.xlsx");
         }
     }
 }

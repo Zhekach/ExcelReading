@@ -42,10 +42,10 @@ namespace ExcelReading
             {
                 return true;
             }
-            else if(string.Equals(Normalize(obj.ToString()), Normalize(Name), StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
+            //else if(string.Equals(Normalize(obj.ToString()), Normalize(Name), StringComparison.OrdinalIgnoreCase))
+            //{
+            //    return true;
+            //}
 
             foreach (string variant in Variants)
             {

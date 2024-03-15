@@ -1,4 +1,6 @@
-﻿namespace ExcelReading
+﻿using System.Threading;
+
+namespace ExcelReading
 {
     internal class ElementsCounter
     {
@@ -66,8 +68,8 @@
                             Console.WriteLine("=============\n" +
                                               "Элемент найден!!\n" +
                                               "=============");
-                            Console.WriteLine("Press any key");
-                            Console.ReadKey();
+                            //Console.WriteLine("Press any key");
+                            //Console.ReadKey();
 
                             return newElement;
                         }
@@ -88,21 +90,32 @@
             return newElement;
         }
 
-        public void CountElement(string[] rowData, float count)
+        public bool CountElement(string[] rowData, float count)
         {
+            bool result = false;
+
             Element newElement = FindElementInRow(rowData);
 
             if (newElement != null && ElementsCounts.ContainsKey(newElement))
             {
                 ElementsCounts[newElement] += count;
+                return result =  true;
             }
+            else
+            return result;
         }
 
         public void PrintInfo()
         {
             foreach (KeyValuePair<Element, float> keyValuePair in ElementsCounts)
             {
-                Console.WriteLine($"Элемент {keyValuePair.Key} в количестве:{keyValuePair.Value}");
+                Console.Write($"Элемент {keyValuePair.Key} в количестве:{keyValuePair.Value}");
+
+                if(keyValuePair.Value == 0)
+                    Console.Write("<==========> NULL VALUE <============>");
+
+                Console.WriteLine();
+                //Thread.Sleep(1000);
             }
         }
     }
