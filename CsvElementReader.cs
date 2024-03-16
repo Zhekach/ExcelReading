@@ -24,9 +24,10 @@ namespace ExcelReading
             using (CsvReader csv = new CsvReader(streamReader, csvConfiguration))
             {
                 var elements = csv.GetRecords<ElementCsvWrapper>().ToList();
+
                 foreach (ElementCsvWrapper element in elements)
                 {
-                    Console.WriteLine(element.Name + element.Type + element.TypeVariants + element.Code + element.CodeVariants + element.Unit + element.UnitVariants);
+                    Console.WriteLine(element.Name + element.Type + element.TypeVariants + element.Code + element.CodeVariants + element.Unit + element.UnitVariants + element.Square);
                 }
 
                 foreach (ElementCsvWrapper element in elements)

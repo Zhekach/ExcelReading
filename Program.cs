@@ -22,17 +22,20 @@ namespace ExcelReading
 
             FileReader fileReader = new FileReader();
             fileReader.Run("test.xlsx");
+
+            ExcelExport excelExport = new ExcelExport();
+            excelExport.Export("exportTest.xlsx", fileReader.ElementsCounter);
         }
 
     }
 
     internal class FileReader
     {
-        private ElementsCounter elementsCounter;
+        public ElementsCounter ElementsCounter;
 
         public FileReader()
         {
-            elementsCounter = new ElementsCounter();
+            ElementsCounter = new ElementsCounter();
         }
         public void Run(string filename)
         {
@@ -88,7 +91,7 @@ namespace ExcelReading
                     //Console.WriteLine("Press any key");
                     //Console.ReadKey();
 
-                    if (elementsCounter.CountElement(rowData, count) == true)
+                    if (ElementsCounter.CountElement(rowData, count) == true)
                     {
                         worksheet.Cells[i, cols + 5].Value = "+";
                     }
@@ -99,7 +102,7 @@ namespace ExcelReading
                 }
             }
 
-            elementsCounter.PrintInfo();
+            ElementsCounter.PrintInfo();
 
             
             workBook.Save("testEditted.xlsx");

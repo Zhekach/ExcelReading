@@ -13,23 +13,25 @@ namespace ExcelReading
         public ElementField Type { get; private set; }
         public ElementField Code { get; private set; }
         public ElementField Unit { get; private set; }
+        public float Square;
 
-        public Element(ElementField name, ElementField type, ElementField code, ElementField unit)
+        public Element(ElementField name, ElementField type, ElementField code, ElementField unit, float square)
         {
             Name = name;
             Type = type;
             Code = code;
             Unit = unit;
+            Square = square;
         }
 
         public override string ToString()
         {
-            return $"Название {Name}, тип {Type} код {Code} единица {Unit}.";
+            return $"Название {Name}, тип {Type} код {Code} единица {Unit}, площадь {Square} м2.";
         }
 
         public Element Clone()
         {
-            return new Element(this.Name, this.Type, this.Code, this.Unit);
+            return new Element(this.Name, this.Type, this.Code, this.Unit, this.Square);
         }
     }
 }

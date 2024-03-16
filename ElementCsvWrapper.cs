@@ -30,6 +30,9 @@ namespace ExcelReading
         [Name("UnitVariants")]
         public string UnitVariants { get; set; }
 
+        [Name("Square")]
+        public string Square { get; set; }
+
         public Element ConvertToElement()
         {
             Element newElement;
@@ -46,14 +49,14 @@ namespace ExcelReading
             string unit = CheckEmptyString(Unit);
             List<string> unitVariants = ElementCsvWrapper.ConvertVariants(UnitVariants);
 
+            float square = CheckSquareData(Square);
+
             ElementField nameField = new ElementField(name, nameVariants);
 
             ElementField typeField = null;
 
             if (type != null && typeVariants != null)
-            {
                 typeField = new ElementField(type, typeVariants);
-            }
 
             ElementField codeField = null;
 
@@ -62,7 +65,7 @@ namespace ExcelReading
 
             ElementField unitField = new ElementField(unit, unitVariants);
 
-            newElement = new Element(nameField, typeField, codeField, unitField);
+            newElement = new Element(nameField, typeField, codeField, unitField, square);
 
             return newElement;
         }
@@ -91,5 +94,27 @@ namespace ExcelReading
 
             return list;
         }
+
+        private static float CheckSquareData(string data)
+        {
+            float result = 0;
+
+            bool success = float.TryParse(data, out result);
+            if (success)
+            {
+                if(result == 0)
+                {
+                    Console.WriteLine("<========> Нулевое значение площади элемента <========>");
+                    Console.WriteLine("Press any key");
+                    Console.ReadKey();
+                }
+                return result;
+            }
+            else
+            {
+                Console.WriteLine("<========> Площадь элемента не распознана <========>");
+                return result;
+            }
+        }    
     }
 }
