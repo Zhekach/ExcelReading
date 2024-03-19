@@ -9,7 +9,7 @@ namespace ExcelReading
 {
     internal class ExcelExport
     {
-        public void Export(string fileName, ElementsCounter elementsCounter)
+        public void Export(string fileName, ElementsCounter elementsCounter, ElementsCategoriesCounter elementsCategoriesCounter)
         {
             Workbook workbook = new Workbook();
             Worksheet worksheet = workbook.Worksheets[0];
@@ -34,6 +34,21 @@ namespace ExcelReading
                 worksheet.Cells[rowNumber, 5].PutValue(keyValuePair.Key.Square);
                 worksheet.Cells[rowNumber, 6].PutValue(keyValuePair.Value);
                 worksheet.Cells[rowNumber, 7].PutValue(keyValuePair.Value * keyValuePair.Key.Square);
+
+                rowNumber++;
+            }
+
+            worksheet.Cells[0, 9].PutValue("Категория");
+            worksheet.Cells[0, 10].PutValue("Количество в категории");
+            worksheet.Cells[0, 11].PutValue("Площадь всего в категории");
+
+            rowNumber = 1;
+
+            foreach(KeyValuePair<string,CategoryCounterValues> keyValuePair in elementsCategoriesCounter.CategoriesCount)
+            {
+                worksheet.Cells[rowNumber, 9].PutValue(keyValuePair.Key);
+                worksheet.Cells[rowNumber, 10].PutValue(keyValuePair.Value.Value);
+                worksheet.Cells[rowNumber, 11].PutValue(keyValuePair.Value.Square);
 
                 rowNumber++;
             }

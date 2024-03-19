@@ -24,7 +24,7 @@ namespace ExcelReading
             fileReader.Run("test.xlsx");
 
             ExcelExport excelExport = new ExcelExport();
-            excelExport.Export("exportTest.xlsx", fileReader.ElementsCounter);
+            excelExport.Export("exportTest.xlsx", fileReader.ElementsCounter, fileReader.ElementsCategoriesCounter);
         }
 
     }
@@ -32,6 +32,7 @@ namespace ExcelReading
     internal class FileReader
     {
         public ElementsCounter ElementsCounter;
+        public ElementsCategoriesCounter ElementsCategoriesCounter;
 
         public FileReader()
         {
@@ -104,9 +105,9 @@ namespace ExcelReading
 
             ElementsCounter.PrintInfo();
 
-            ElementsCategoriesCounter categoriesCounter = new ElementsCategoriesCounter(ElementsCounter);
-            categoriesCounter.CountElements();
-            categoriesCounter.PrintInfo();
+            ElementsCategoriesCounter = new ElementsCategoriesCounter(ElementsCounter);
+            ElementsCategoriesCounter.CountElements();
+            ElementsCategoriesCounter.PrintInfo();
             
             workBook.Save("testEditted.xlsx");
         }
