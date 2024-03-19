@@ -27,7 +27,7 @@ namespace ExcelReading
                     Element newElement = element.ConvertToElement();
                     ElementsVariants.s_Elements.Add(newElement);
 
-                    Console.WriteLine(element);
+                    Console.WriteLine(newElement);
                 }
             }
 

@@ -104,6 +104,9 @@ namespace ExcelReading
 
             ElementsCounter.PrintInfo();
 
+            ElementsCategoriesCounter categoriesCounter = new ElementsCategoriesCounter(ElementsCounter);
+            categoriesCounter.CountElements();
+            categoriesCounter.PrintInfo();
             
             workBook.Save("testEditted.xlsx");
         }

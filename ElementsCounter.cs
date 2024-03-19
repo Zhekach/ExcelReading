@@ -115,7 +115,6 @@ namespace ExcelReading
                     Console.Write("<==========> NULL VALUE <============>");
 
                 Console.WriteLine();
-                //Thread.Sleep(1000);
             }
         }
     }
