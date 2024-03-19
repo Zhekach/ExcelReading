@@ -1,11 +1,6 @@
 ﻿using CsvHelper.Configuration;
 using CsvHelper;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExcelReading
 {
@@ -25,15 +20,14 @@ namespace ExcelReading
             {
                 var elements = csv.GetRecords<ElementCsvWrapper>().ToList();
 
-                foreach (ElementCsvWrapper element in elements)
-                {
-                    Console.WriteLine(element.Name + element.Type + element.TypeVariants + element.Code + element.CodeVariants + element.Unit + element.UnitVariants + element.Square);
-                }
+                Console.WriteLine("Распознаны следующие элементы:");
 
                 foreach (ElementCsvWrapper element in elements)
                 {
                     Element newElement = element.ConvertToElement();
                     ElementsVariants.s_Elements.Add(newElement);
+
+                    Console.WriteLine(element);
                 }
             }
 

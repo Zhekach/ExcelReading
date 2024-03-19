@@ -6,6 +6,10 @@ namespace ExcelReading
     {
         static readonly char s_splitter = '#';
 
+        [Name("Category")]
+        public string Category { get; set; }
+        private readonly string _categoryBase = "Без категории";
+
         [Name("Name")]
         public string Name { get; set; }
 
@@ -37,6 +41,8 @@ namespace ExcelReading
         {
             Element newElement;
 
+            string category = CheckEmptyString(Category, _categoryBase);
+
             string name = CheckEmptyString(Name);
             List<string> nameVariants = ElementCsvWrapper.ConvertVariants(NameVariants);
 
@@ -65,7 +71,7 @@ namespace ExcelReading
 
             ElementField unitField = new ElementField(unit, unitVariants);
 
-            newElement = new Element(nameField, typeField, codeField, unitField, square);
+            newElement = new Element(category, nameField, typeField, codeField, unitField, square);
 
             return newElement;
         }
@@ -74,6 +80,14 @@ namespace ExcelReading
         {
             if (dataString == "" || dataString == null)
                 return null;
+
+            return dataString;
+        }
+
+        private static string CheckEmptyString(string dataString, string dataBase)
+        {
+            if (dataString == "" || dataString == null)
+                return dataBase;
 
             return dataString;
         }
