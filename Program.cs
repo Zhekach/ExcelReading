@@ -80,6 +80,12 @@ namespace ExcelReading
                         if (worksheet.Cells[i, j].Value is string)
                         {
                             rowData[j] = (string)worksheet.Cells[i, j].Value;
+                            bool isSingle = Single.TryParse(rowData[j], NumberStyles.Float, new CultureInfo("fr-FR"), out float countFloat);
+
+                            if (isSingle)
+                            {
+                                count += countFloat;
+                            }
                         }
                         else if (worksheet.Cells[i, j].Value is Int32)
                         {
@@ -108,7 +114,7 @@ namespace ExcelReading
             ElementsCategoriesCounter = new ElementsCategoriesCounter(ElementsCounter);
             ElementsCategoriesCounter.CountElements();
             ElementsCategoriesCounter.PrintInfo();
-            
+
             workBook.Save("testEditted.xlsx");
         }
     }
